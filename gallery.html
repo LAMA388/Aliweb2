@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>📘 كتاب الذكريات</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+      background-color: #f7f3f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .book {
+      width: 320px;
+      height: 450px;
+      background-color: #8d6748;
+      border-radius: 10px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+      transition: transform 1s ease;
+    }
+
+    .cover {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-color: #a0765b;
+      color: white;
+      font-size: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .cover button {
+      margin-top: 20px;
+      padding: 8px 18px;
+      background-color: #ffffff;
+      color: #8d6748;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .cover button:hover {
+      background-color: #eee0d5;
+    }
+
+    .pages {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      padding: 10px;
+      background-color: white;
+    }
+
+    .pages img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      object-fit: cover;
+      height: 250px;
+    }
+
+    .caption {
+      font-size: 16px;
+      color: #333;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .btn {
+      margin-top: 10px;
+      padding: 6px 16px;
+      background-color: #8d6748;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #704f35;
+    }
+
+    .end-message {
+      font-size: 16px;
+      color: #333;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .end-btn {
+      padding: 6px 16px;
+      background-color: #4d3627;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    .end-btn:hover {
+      background-color: #3a281e;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="book" id="book">
+    <div class="cover" id="cover">
+      📘 كتاب الذكريات<br>
+      <button onclick="openBook()">تصفح الآن</button>
+    </div>
+
+    <div class="pages" id="pages">
+      <img id="galleryImage" src="p2.jpg" alt="صورة">
+      <div class="caption" id="imageCaption">الاحتفال باليوم الوطني السعودي مع أ.فيصل ال فاضل</div>
+      <button class="btn" onclick="nextImage(event)">التالي</button>
+    </div>
+  </div>
+
+  <script>
+    const book = document.getElementById('book');
+    const cover = document.getElementById('cover');
+    const pages = document.getElementById('pages');
+    const galleryImage = document.getElementById('galleryImage');
+    const imageCaption = document.getElementById('imageCaption');
+
+    const images = [
+      { src: 'p2.jpg', caption: 'الاحتفال باليوم الوطني السعودي مع أ.فيصل ال فاضل' },
+      { src: 'p3.jpg', caption: 'دوري المدرسة برفقة مدير المدرسة وأ.ابراهيم ابو ساق' },
+      { src: 'p4.jpg', caption: 'تكريم الفائز' },
+      { src: 'p5.jpg', caption: 'في هذه المدرسة عرفت المعنى الحقيقي للأخوة والزمالة ورفقة تبقى في القلب ماحييت' },
+      { src: 'p6.jpg', caption: 'تكريمنا لزميلنا أ.سلطان فرحان بمناسبة تأهل ابنه' },
+      { src: 'p7.jpg', caption: 'لحظات لا تنسى' },
+      { src: 'p8.jpg', caption:'في أجواء من الألفة والفرح، احتفل منسوبو المدرسة بعيد الفطر المبارك، مجسدين معاني المحبة والتلاحم' },
+      { src: 'p9.jpg', caption:'هنا كان العمل وهنا كان الأثَر' },
+      { src: 'p11.jpg', caption: 'بهجة العيد تجمع القلوب في لحظة وفاء ومحبة' },
+      { src: 'p12.jpg', caption: 'التكريم… ذكرى تبقى في القلب مدى الحياة' },
+      { src: 'p10.jpg', caption: 'زملائي الأعزاء العمل معكم كان شرفاً، والود بيننا باقي مابقيت الذكرى' }
+    ];
+
+    let currentIndex = 0;
+
+    function openBook() {
+      cover.style.display = 'none';
+      pages.style.display = 'flex';
+    }
+
+    function nextImage(event) {
+      event.stopPropagation();
+      currentIndex++;
+
+      if (currentIndex < images.length) {
+        galleryImage.src = images[currentIndex].src;
+        imageCaption.textContent = images[currentIndex].caption;
+      } else {
+        // نهاية الكتاب
+        pages.innerHTML = `
+          <div class="end-message">
+            ٣٤ عاماً من العطاء والعمل الدؤوب، فيها لحظات صنعت الفارق، وقلوب شاركتنا الطريق دون أن تظهر في الصور، لكنها راسخة في الوجدان.<br><br>
+            شكري وامتناني لإدارة المدرسة ولكل زميل وزميلة، لمن رافقني ومن مر بي مرور الكرام، أسأل الله أن يجمعنا دائماً على الخير، وأن يبارك في أعماركم وأعمالكم.<br><br>
+            إلى لقاء يجمعنا في دروب المحبة والذكرى الطيبة 🌷
+          </div>
+          <button class="end-btn" onclick="restart()">إنهاء</button>
+        `;
+      }
+    }
+
+    function restart() {
+      currentIndex = 0;
+      galleryImage.src = images[0].src;
+      imageCaption.textContent = images[0].caption;
+      cover.style.display = 'flex';
+      pages.style.display = 'none';
+    }
+  </script>
+
+</body>
+</html>
